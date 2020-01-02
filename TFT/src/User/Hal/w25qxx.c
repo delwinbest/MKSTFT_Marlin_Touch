@@ -1,11 +1,11 @@
 #include "w25qxx.h"
 #include "variants.h"
 
-/*************************** W25Qxx SPI ģʽ�ײ���ֲ�Ľӿ� ***************************/
+/*************************** W25Qxx SPI Ä£Êœµ×²ãÒÆÖ²µÄœÓ¿Ú ***************************/
 //#define W25Qxx_SPI     _SPI3
 //#define W25Qxx_SPEED   0
 
-//Ƭѡ
+//Æ¬Ñ¡
 void W25Qxx_SPI_CS_Set(u8 level)
 {
    #if defined(MKS_32_V1_4)
@@ -18,13 +18,13 @@ void W25Qxx_SPI_CS_Set(u8 level)
   #endif
 }
 
-//��д����
+//¶ÁÐŽº¯Êý
 uint8_t W25Qxx_SPI_Read_Write_Byte(uint8_t data)
 {
   return SPI_Read_Write(W25Qxx_SPI,data);
 }
 
-//��ʼ��
+//³õÊŒ»¯
 void W25Qxx_Init(void)
 {
   SPI_Config(W25Qxx_SPI);
@@ -34,14 +34,14 @@ void W25Qxx_Init(void)
 /*************************************************************************************/
 
 
-// дʹ��
+// ÐŽÊ¹ÄÜ
 void W25Qxx_WriteEnable(void)
 {
   W25Qxx_SPI_CS_Set(0);
   W25Qxx_SPI_Read_Write_Byte(CMD_WRITE_ENABLE);
   W25Qxx_SPI_CS_Set(1);
 }
-//�ȴ�W25Qxx����
+//µÈŽýW25Qxx¿ÕÏÐ
 void W25Qxx_WaitForWriteEnd(void)
 {
   uint8_t flashstatus = 0;
@@ -56,7 +56,7 @@ void W25Qxx_WaitForWriteEnd(void)
   W25Qxx_SPI_CS_Set(1);
 }
 
-//��ҳд
+//°ŽÒ³ÐŽ
 void W25Qxx_WritePage(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByteToWrite)
 {
   W25Qxx_WriteEnable();
@@ -77,16 +77,15 @@ void W25Qxx_WritePage(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByteToWr
   W25Qxx_WaitForWriteEnd();
 }
 
-//��FLASH�з���buffer������
+//ÏòFLASHÖÐ·¢ËÍbufferµÄÊýŸÝ
 void W25Qxx_WriteBuffer(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByteToWrite)
 {
   uint8_t NumOfPage = 0, NumOfSingle = 0, Addr = 0, count = 0, temp = 0;
-  
-  
-  Addr = WriteAddr % W25QXX_SPI_PAGESIZE;//������һҳ���ĸ���ַ��ʼд����
-  count = W25QXX_SPI_PAGESIZE - Addr;//������ҳ������д��������
-  NumOfPage =  NumByteToWrite / W25QXX_SPI_PAGESIZE;//����Ҫ��������ݳ��ȿ���д����ҳ
-  NumOfSingle = NumByteToWrite % W25QXX_SPI_PAGESIZE;//����������ҳ�����⣬������д�����ݳ���
+
+  Addr = WriteAddr % W25QXX_SPI_PAGESIZE;//Žú±íŽÓÒ»Ò³ÖÐÄÄžöµØÖ·¿ªÊŒÐŽÊýŸÝ
+  count = W25QXX_SPI_PAGESIZE - Addr;//Žú±ížÃÒ³»¹¿ÉÒÔÐŽ¶àÉÙÊýŸÝ
+  NumOfPage =  NumByteToWrite / W25QXX_SPI_PAGESIZE;//Žú±íÒªŽæÈëµÄÊýŸÝ³€¶È¿ÉÒÔÐŽ¶àÉÙÒ³
+  NumOfSingle = NumByteToWrite % W25QXX_SPI_PAGESIZE;//Žú±í³ýÁËÕûÒ³ÊýŸÝÍâ£¬»¹¿ÉÒÔÐŽµÄÊýŸÝ³€¶È
 
   if (Addr == 0) /*!< WriteAddr is sFLASH_PAGESIZE aligned  */
   {
@@ -147,10 +146,9 @@ void W25Qxx_WriteBuffer(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByteTo
       }
     }
   }
-  
 }
 
-/*��FLASH�ж�����*/
+/*ŽÓFLASHÖÐ¶ÁÊýŸÝ*/
 void W25Qxx_ReadBuffer(uint8_t* pBuffer, uint32_t ReadAddr, uint16_t NumByteToRead)
 {
   W25Qxx_SPI_CS_Set(0);
@@ -170,7 +168,7 @@ void W25Qxx_ReadBuffer(uint8_t* pBuffer, uint32_t ReadAddr, uint16_t NumByteToRe
   W25Qxx_SPI_CS_Set(1);
 }
 
-//��ID
+//¶ÁID
 uint32_t W25Qxx_ReadID(void)
 {
   uint32_t Temp = 0;
@@ -187,7 +185,7 @@ uint32_t W25Qxx_ReadID(void)
   return Temp;
 }
 
-//��������
+//ÉÈÇø²Á³ý
 void W25Qxx_EraseSector(uint32_t SectorAddr)
 {
   W25Qxx_WriteEnable();
@@ -202,7 +200,7 @@ void W25Qxx_EraseSector(uint32_t SectorAddr)
   W25Qxx_WaitForWriteEnd();
 }
 
-//�����
+//¿é²Á³ý
 void W25Qxx_EraseBlock(uint32_t BlockAddr)
 {
   W25Qxx_WriteEnable();
@@ -217,7 +215,7 @@ void W25Qxx_EraseBlock(uint32_t BlockAddr)
   W25Qxx_WaitForWriteEnd();
 }
 
-//ȫƬ����
+//È«Æ¬²Á³ý
 void W25Qxx_EraseBulk(void)
 {
   W25Qxx_WriteEnable();

@@ -1,7 +1,5 @@
 #ifndef _CONFIGRATION_H_
 #define _CONFIGRATION_H_
-//flash mode settings
-
 
 //===========================================================================
 //=========================== Marlin Mode Settings ===========================
@@ -186,7 +184,7 @@
  * Bit depth: 24 / 32 bit, Pixel size: 95*95(for TFT35), 70*70(for TFT28/TFT24)
  */
 #define CUSTOM_0_LABEL "Restore EEPROM"
-#define CUSTOM_0_GCODE "M51\n"
+#define CUSTOM_0_GCODE "M501\n"
 //#define CUSTOM_1_LABEL "Custom2"
 //#define CUSTOM_1_GCODE "M105\n"
 //#define CUSTOM_2_LABEL "Custom2"

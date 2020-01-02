@@ -57,17 +57,17 @@ GUI_NUM_MODE GUI_GetNumMode(void)
 
 void GUI_Clear(uint16_t color)
 {
-  uint32_t index=0; 
-
+  uint32_t index=0;    
   LCD_SetWindow(0, 0, LCD_WIDTH-1, LCD_HEIGHT-1);
   LCD_WR_REG(0x2C);  
   for(index=0; index<LCD_WIDTH*LCD_HEIGHT; index++)
   {
-   LCD_WR_DATA(color);
-    //LCD_WR_16BITS_DATA(color);
+  #if defined(MKS_32_V1_4)
+    LCD_WR_DATA(color);
+  #else
+    LCD_WR_16BITS_DATA(color);
+  #endif
   }
-
-
 }  
 
 static uint8_t pixel_limit_flag = 0;

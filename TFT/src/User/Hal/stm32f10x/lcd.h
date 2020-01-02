@@ -18,7 +18,6 @@
   #define LCD_WR_REG(regval) do{ LCD->LCD_REG = regval; }while(0)
   #define LCD_WR_DATA(data)  do{ LCD->LCD_RAM = data; }while(0)
   
-//#else
  #elif defined(MKS_32_V1_4)
  /*
 #define LCD_WR PB14
@@ -53,7 +52,6 @@
   * PB9   :LCD-CS
   * PB8   :LCD-RS   LCD-RS发送的数据代表是命令还是显示数据
   */
-
   #define	LCD_CS_SET  GPIOB->BSRR=1<<9    //片选端口    PB9
   #define	LCD_RS_SET	GPIOB->BSRR=1<<8    //数据/命令 	PB8	   
   #define	LCD_WR_SET	GPIOB->BSRR=1<<7    //写数据			PB7

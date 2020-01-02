@@ -20,7 +20,7 @@ void infoSettingsReset(void)
 // Version infomation
 void menuInfo(void)
 {
-  const char* hardware = "Board   : MKS-" HARDWARE_VERSION;
+  const char* hardware = "Board   : BIGTREETECH_" HARDWARE_VERSION;
   const char* firmware = "Firmware: "HARDWARE_VERSION"." STRINGIFY(SOFTWARE_VERSION) " " __DATE__;
   
   u16 HW_X = (LCD_WIDTH - GUI_StrPixelWidth((u8 *)hardware))/2;

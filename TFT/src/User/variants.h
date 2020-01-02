@@ -231,7 +231,7 @@
   #define BUZZER_PIN    PD13
 #elif defined(MKS_32_V1_4)
   //Keep Things quiet 
-  //#define BUZZER_PIN    PA2
+  #define BUZZER_PIN    PA2
 #endif
 
 //LCD Encoder support
@@ -251,10 +251,7 @@
 #define LCD_ENCODER_SUPPORT (defined(LCD_ENCA_PIN) && defined(LCD_ENCB_PIN) && defined(LCD_BTN_PIN))
 
 //U disk support
-#if defined(TFT24_V1_1) || defined(TFT35_V3_0)
-  #define U_DISK_SUPPROT
-  #define USE_USB_OTG_FS
-#elif defined(MKS_32_V1_4)
+#if defined(TFT24_V1_1) || defined(TFT35_V3_0) || defined(MKS_32_V1_4)
   #define U_DISK_SUPPROT
   #define USE_USB_OTG_FS
 #endif
@@ -274,8 +271,8 @@
 //Debug disable, free pins for other function
 #if defined(TFT35_V1_0) || defined(TFT35_V1_1) || defined(TFT35_V1_2) || defined(TFT28_V1_0) || defined(TFT35_V2_0)
   #define DISABLE_JTAG    //free JTAG(PB3/PB4) for SPI3
-#elif defined(TFT24_V1_1) 
-  #define DISABLE_DEBUG   
+#elif defined(TFT24_V1_1)
+  #define DISABLE_DEBUG   //
 #elif defined(TFT35_V3_0)
   //stm32f207 needn't this
 #endif
@@ -358,7 +355,6 @@
   #elif defined(MKS_32_V1_4)
     #define HARDWARE_VERSION "TFT32_V4.0"
   #endif
-
 #endif
 
 #endif
