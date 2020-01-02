@@ -1,26 +1,25 @@
 #include "xpt2046.h"
 #include "GPIO_Init.h"
 #include "includes.h"
-/***************************************** XPT2046 SPI ģʽ�ײ���ֲ�Ľӿ�********************************************/
-//XPT2046 SPI��� - ʹ��ģ��SPI
+/***************************************** XPT2046 SPI Ä£Êœµ×²ãÒÆÖ²µÄœÓ¿Ú********************************************/
+//XPT2046 SPIÏà¹Ø - Ê¹ÓÃÄ£ÄâSPI
 _SW_SPI xpt2046;
 
-//Ƭѡ
+//Æ¬Ñ¡
 void XPT2046_CS_Set(u8 level)
 {
   SW_SPI_CS_Set(&xpt2046, level);
 }
 
-//��д����
+//¶ÁÐŽº¯Êý
 u8 XPT2046_ReadWriteByte(u8 TxData)
 {		
   return SW_SPI_Read_Write(&xpt2046, TxData);			    
 }
 
-//XPT2046 SPI�ͱ��жϳ�ʼ��
+//XPT2046 SPIºÍ±ÊÖÐ¶Ï³õÊŒ»¯
 void XPT2046_Init(void)
 {
- 
   //PA15-TPEN
   GPIO_InitSet(XPT2046_TPEN, MGPIO_MODE_IPN, 0);
 
@@ -31,10 +30,9 @@ void XPT2046_Init(void)
   XPT2046_MOSI    //MOSI
   );
   XPT2046_CS_Set(1);
- 
 }
 
-//�����ж�
+//¶Á±ÊÖÐ¶Ï
 u8 XPT2046_Read_Pen(void)
 {
   return GPIO_GetLevel(XPT2046_TPEN);
@@ -177,7 +175,7 @@ void Touch_Sw(uint8_t num)
 #endif
 /*---------------------------------select fun-------------------------end--------*/
 
-//��ȡ XPT2046 ת���õ�ADֵ
+//¶ÁÈ¡ XPT2046 ×ª»¯ºÃµÄADÖµ
 u16 XPT2046_Read_AD(u8 CMD)
 {
   u16 ADNum;
@@ -186,14 +184,14 @@ u16 XPT2046_Read_AD(u8 CMD)
   XPT2046_ReadWriteByte(CMD);
   ADNum=XPT2046_ReadWriteByte(0xff);
   ADNum= ((ADNum)<<8) | XPT2046_ReadWriteByte(0xff);
-  ADNum >>= 4;         //XPT2046����ֻ��12bits,��������λ
+  ADNum >>= 4;         //XPT2046ÊýŸÝÖ»ÓÐ12bits,ÉáÆúµÍËÄÎ»
 
   XPT2046_CS_Set(1);
   return ADNum;
 }
 
-#define READ_TIMES 5 	//��ȡ����
-#define LOST_VAL 1	  	//����ֵ
+#define READ_TIMES 5 	//¶ÁÈ¡ŽÎÊý
+#define LOST_VAL 1	  	//¶ªÆúÖµ
 u16 XPT2046_Average_AD(u8 CMD)
 {
   u16 i, j;
@@ -201,11 +199,11 @@ u16 XPT2046_Average_AD(u8 CMD)
   u16 sum=0;
   u16 temp;
   for(i=0; i<READ_TIMES; i++) buf[i] = XPT2046_Read_AD(CMD);		 		    
-  for(i=0; i<READ_TIMES-1; i++)//����
+  for(i=0; i<READ_TIMES-1; i++)//ÅÅÐò
   {
     for(j=i+1; j<READ_TIMES; j++)
     {
-      if(buf[i] > buf[j]) //��������
+      if(buf[i] > buf[j]) //ÉýÐòÅÅÁÐ
       {
         temp = buf[i];
         buf[i] = buf[j];
@@ -220,7 +218,7 @@ u16 XPT2046_Average_AD(u8 CMD)
 } 
 
 
-#define ERR_RANGE 50 //��Χ 
+#define ERR_RANGE 50 //Îó²î·¶Î§ 
 u16 XPT2046_Repeated_Compare_AD(u8 CMD) 
 {
   u16 ad1, ad2;
@@ -228,7 +226,7 @@ u16 XPT2046_Repeated_Compare_AD(u8 CMD)
   ad2 = XPT2046_Average_AD(CMD);
 
   if((ad2 <= ad1 && ad1 < ad2 + ERR_RANGE) 
-  || (ad1 <= ad2 && ad2 < ad1 + ERR_RANGE)) //ǰ���������С�� ERR_RANGE
+  || (ad1 <= ad2 && ad2 < ad1 + ERR_RANGE)) //Ç°ºóÁœŽÎÎó²îÐ¡ÓÚ ERR_RANGE
   {
     return (ad1+ad2)/2;
   }

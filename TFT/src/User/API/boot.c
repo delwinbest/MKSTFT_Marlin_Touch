@@ -146,6 +146,7 @@ void updateFont(char *font, u32 addr)
   u8*  tempbuf = NULL;
   
   if (f_open(&myfp, font, FA_OPEN_EXISTING|FA_READ) != FR_OK)  return;
+
   tempbuf = malloc(W25QXX_SECTOR_SIZE);
   if (tempbuf == NULL)  return;
   GUI_Clear(BLACK);
@@ -156,11 +157,9 @@ void updateFont(char *font, u32 addr)
   while(!f_eof(&myfp))
   {
     if (f_read(&myfp, tempbuf, W25QXX_SECTOR_SIZE, &rnum) != FR_OK) break;
-
+    
     W25Qxx_EraseSector(addr + offset);
-  
     W25Qxx_WriteBuffer(tempbuf, addr + offset, W25QXX_SECTOR_SIZE);
- 
     offset += rnum;
     if(progress != offset * 100 / f_size(&myfp))
     {
@@ -193,21 +192,16 @@ void scanUpdates(void)
   if(mountSDCard())
   {
     result = scanUpdateFile();
-
     if (result & FONT)
     {
-
       updateFont(FONT_ROOT_DIR"/byte_ascii.fon", BYTE_ASCII_ADDR);
       updateFont(FONT_ROOT_DIR"/word_unicode.fon", WORD_UNICODE);
     }
     if (result & BMP) //bmp
     {
       updateIcon();
-     
     }
     if (result) f_rename(ROOT_DIR, ROOT_DIR".CUR");
     scanResetDir();
   }
-  
- 
 }
